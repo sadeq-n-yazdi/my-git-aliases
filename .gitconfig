@@ -1,0 +1,16 @@
+
+[alias]
+	is-clean =! "[ -z \"$(git status --porcelain)\" ] && (echo -n yes ; exit 0) || (echo -n no ; exit 1)"
+        get-current-branch =! git symbolic-ref --short -q HEAD | cut -d '/' -f2-
+        gcb = get-current-branch
+
+        get-current-branch-remote =! git rev-parse --abbrev-ref --symbolic-full-name @{u} | cut -d '/' -f2-
+        gcbr = get-current-branch-remote
+
+        get-remote-repo-name =! git symbolic-ref --short -q HEAD | cut -d '/' -f1
+
+        pushup = add -A && commit -m \"Update\" && push origin
+
+        replace-this ="! git push ${1:-origin} $(git gcb):deleted/$(date +%Y%m%d)/$(git gcb) && git push -d ${1:-origin} $(git gcb) ; git push"
+        replace-this-no-backup ="! git push -d ${1:-origin} $(git gcb) && git push"
+	wip = "! f(){ git add -A; git commit -m \"WIP: \"; git branch --show-current; }; f"
